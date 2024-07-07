@@ -1,0 +1,42 @@
+%!
+
+% Load font, set font size and set current font
+% This has to be done before defining dx, since it calculates font width
+/Courier findfont
+16 scalefont
+setfont
+
+% Define constants and variables used
+/pageWidth 595 def
+/pageHeight 842 def
+/size 38 def						% size of the grid
+/padding 0 def						% padding outside the grid
+/dx (X) stringwidth pop 2 add def  	% calculate and store the width of "X"
+
+% x_pos and y_pos defines the starting point of the drawing
+% remember: postscript has origo (0,0) in lower left corner
+% we calculate the starting position to place the drawing in the center of the A4 page
+/boxwidth size dx mul def
+/x_pos pageWidth 2 div boxwidth 2 div sub dx 2 div sub def
+/y_pos pageHeight 2 div boxwidth 2 div sub dx 2 div sub def
+
+% Set the document to A4 page size
+<< /PageSize [pageWidth pageHeight] >> setpagedevice
+
+0 1 size {
+	/i exch def
+	0 1 size {
+		/j exch def
+		x_pos j dx mul add y_pos moveto 
+
+		i 0 eq size i eq or
+		j 0 eq size j eq or or
+		i j eq size i sub j eq or or
+		{
+			(X) show
+		} if
+	} for
+	/y_pos y_pos dx add def
+} for
+
+showpage
